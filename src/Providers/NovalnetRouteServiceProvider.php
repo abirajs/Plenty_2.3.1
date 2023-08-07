@@ -27,7 +27,7 @@ class NovalnetRouteServiceProvider extends RouteServiceProvider
 {
     /**
      * Set route for success, failure, reinitialize payment and callback process
-     *
+     * 
      * @param Router $router
      */
     public function map(Router $router)
