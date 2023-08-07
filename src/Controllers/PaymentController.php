@@ -128,6 +128,7 @@ class PaymentController extends Controller
      */
     public function paymentResponse() {
         $responseData = $this->request->all();
+        $this->getLogger(__METHOD__)->error('responseData', $responseData);
         $isPaymentSuccess = isset($responseData['status']) && in_array($responseData['status'], ['90','100']);
         $notificationMessage = $this->paymentHelper->getNovalnetStatusText($responseData);
         if ($isPaymentSuccess) {
@@ -135,18 +136,20 @@ class PaymentController extends Controller
         } else {
             $this->paymentService->pushNotification($notificationMessage, 'error', 100);    
         }
-        
+        $this->getLogger(__METHOD__)->error('notificationMessage', $notificationMessage);
         if($responseData['payment_type'] != 'APPLEPAY') {
             $responseData['test_mode'] = $this->paymentHelper->decodeData($responseData['test_mode'], $responseData['uniqid']);
             $responseData['amount']    = $this->paymentHelper->decodeData($responseData['amount'], $responseData['uniqid']) / 100;
         }
         $sessionPaymentRequestData = $this->sessionStorage->getPlugin()->getValue('nnPaymentDataUpdated');
         $paymentRequestData = !empty($sessionPaymentRequestData) ? array_merge($sessionPaymentRequestData, $responseData) : $responseData;
-        
+		$this->getLogger(__METHOD__)->error('sessionPaymentRequestData', $sessionPaymentRequestData);
+		$this->getLogger(__METHOD__)->error('paymentRequestData', $paymentRequestData);
         $this->sessionStorage->getPlugin()->setValue('nnPaymentData', $paymentRequestData);
         $this->paymentService->validateResponse();
-       
+        $this->getLogger(__METHOD__)->error('paymentRequestData_lang');
         return $this->response->redirectTo($this->sessionStorage->getLocaleSettings()->language . '/confirmation');
+        $this->getLogger(__METHOD__)->error('paymentRequestData_lang2');
     }
 
     /**
