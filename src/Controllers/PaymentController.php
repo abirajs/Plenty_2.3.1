@@ -146,7 +146,7 @@ class PaymentController extends Controller
         $this->sessionStorage->getPlugin()->setValue('nnPaymentData', $paymentRequestData);
         $this->paymentService->validateResponse();
        
-        return $this->response->redirectTo(strtolower($paymentRequestData['lang']) . '/confirmation');
+        return $this->response->redirectTo($this->sessionStorage->getLocaleSettings()->language . '/confirmation');
     }
 
     /**
