@@ -37,7 +37,8 @@ class NovalnetPaymentMethodReinitializePayment
     $sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
     $payments = $paymentRepository->getPaymentsByOrderId($order['id']);
 
-    
+    $sessionStorage->getPlugin()->setValue('nnBillingAddressId', $order['billingAddress']['id']);
+    $sessionStorage->getPlugin()->setValue('nnShippingAddressId', $order['deliveryAddress']['id']);
     // Get payment method Id and status
     foreach($order['properties'] as $property) {
         if($property['typeId'] == 3)
