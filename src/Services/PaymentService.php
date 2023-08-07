@@ -290,8 +290,8 @@ class PaymentService
             $basket->basketAmount = $basket->basketAmountNet;
         }
         
-        $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $billingInvoiceAddrId;
-        $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $shippingInvoiceAddrId;
+        $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $this->sessionStorage->getPlugin()->getValue('nnBillingAddressId'); 
+        $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $this->sessionStorage->getPlugin()->getValue('nnShippingAddressId');
         $address = $this->paymentHelper->getCustomerBillingOrShippingAddress((int) $billingAddressId);
         $shippingAddress = $address;
         if(!empty($shippingAddressId)){
