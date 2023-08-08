@@ -5,9 +5,7 @@
 </head>
 <body class="nn_redirect_page" style="overscroll-behavior:contain;">
 <form method="post" name="novalnet_redirect_form" id="novalnet_redirect_form"  action="{{nnPaymentUrl}}">
-    {% for dataKey,dataValue in formData %}
-        <input id="{{dataKey}}" value="{{dataValue}}" name="{{dataKey}}" type="hidden"/>
-    {% endfor %}
+
 
     <div style="text-align:center;">{{ trans("Novalnet::PaymentMethod.novalnet_redirect_text") }}</div>
     <div class="loader"></div>
