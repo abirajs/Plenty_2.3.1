@@ -448,7 +448,6 @@ class PaymentService
         $this->encodePaymentData($paymentRequestData);
         $paymentRequestData['implementation'] = 'ENC';
         $paymentRequestData['return_url'] = $paymentRequestData['error_return_url'] = $this->getReturnPageUrl();
-        $paymentRequestData['return_method'] = $paymentRequestData['error_return_method'] = 'POST';
         if ($paymentKey != 'NOVALNET_CC') {
             $paymentRequestData['user_variable_0'] = $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl;
         }
