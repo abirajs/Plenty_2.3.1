@@ -287,6 +287,7 @@ class PaymentController extends Controller
         $this->sessionStorage->getPlugin()->setValue('nnOrderNo', null);
         $sendPaymentRequest = $this->paymentService->checkPaymentRequestSend($paymentRequestData['order_no']);
         $tid_status = $this->paymentHelper->getNovalnetTxStatus($paymentRequestData['order_no']);
+	    $this->getLogger(__METHOD__)->error('redirectPayment', $paymentRequestData);
         if(!empty($paymentRequestData['order_no']) && ( ($sendPaymentRequest == true && empty($tid_status)) || (!empty($tid_status) && !in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100, 103])) ) ) {
             $this->paymentService->insertRequestDetailsForReinit($paymentRequestData);
             $this->sessionStorage->getPlugin()->setValue('nnPaymentDataUpdated', $paymentRequestData);  
