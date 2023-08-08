@@ -109,7 +109,7 @@ class NovalnetServiceProvider extends ServiceProvider
                           DataBase $dataBase,
                           EventProceduresService $eventProceduresService)
     {
-         $this->getLogger(__METHOD__)->error('ServiceProviderFile');
+
         // Register the Novalnet payment methods in the payment method container
         $payContainer->register('plenty_novalnet::NOVALNET_SEPA', NovalnetSepaPaymentMethod::class,
             [
