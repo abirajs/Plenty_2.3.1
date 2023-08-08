@@ -474,6 +474,7 @@ class NovalnetServiceProvider extends ServiceProvider
             
         /** @var Order $order */ 
         $order = $event->getOrder();
+        $this->getLogger(__METHOD__)->error('Order Details' , $order);    
         $payments = $paymentRepository->getPaymentsByOrderId($order->id);
         foreach ($payments as $payment)
         {
