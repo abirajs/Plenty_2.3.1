@@ -161,6 +161,7 @@ class PaymentController extends Controller
     public function processPayment()
     {
         $requestData = $this->request->all();
+	$this->getLogger(__METHOD__)->error('responseData', $requestData);
         $notificationMessage = $this->paymentHelper->getNovalnetStatusText($requestData);
         $basket = $this->basketRepository->load();  
         $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $requestData['nn_billing_addressid'];
