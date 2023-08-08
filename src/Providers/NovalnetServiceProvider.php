@@ -300,9 +300,7 @@ class NovalnetServiceProvider extends ServiceProvider
         $eventDispatcher->listen(GetPaymentMethodContent::class,
                 function(GetPaymentMethodContent $event) use($config, $paymentHelper, $addressRepository, $paymentService, $basketRepository, $paymentMethodService, $sessionStorage, $twig)
                 {
-                $orderDetails = $event->getOrder();
-        $this->getLogger(__METHOD__)->error('Order Details' , $orderDetails);   
-                    
+
                     if($paymentHelper->getPaymentKeyByMop($event->getMop()))
                     {   
                         $paymentKey = $paymentHelper->getPaymentKeyByMop($event->getMop()); 
