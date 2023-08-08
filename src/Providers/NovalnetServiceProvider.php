@@ -294,14 +294,15 @@ class NovalnetServiceProvider extends ServiceProvider
             'en' =>  'Novalnet | Auftrag aus Backend erstellt',
         ];
 
-        $orderDetails = $event->getOrder();
-        $this->getLogger(__METHOD__)->error('Order Details' , $orderDetails);    
+ 
         
         // Listen for the event that gets the payment method content
         $eventDispatcher->listen(GetPaymentMethodContent::class,
                 function(GetPaymentMethodContent $event) use($config, $paymentHelper, $addressRepository, $paymentService, $basketRepository, $paymentMethodService, $sessionStorage, $twig)
                 {
-        
+                $orderDetails = $event->getOrder();
+        $this->getLogger(__METHOD__)->error('Order Details' , $orderDetails);   
+                    
                     if($paymentHelper->getPaymentKeyByMop($event->getMop()))
                     {   
                         $paymentKey = $paymentHelper->getPaymentKeyByMop($event->getMop()); 
