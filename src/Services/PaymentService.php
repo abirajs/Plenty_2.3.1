@@ -283,13 +283,14 @@ class PaymentService
      /** @var \Plenty\Modules\Frontend\Services\VatService $vatService */
         $vatService = pluginApp(\Plenty\Modules\Frontend\Services\VatService::class);
 
-        //we have to manipulate the basket because its stupid and doesnt know if its netto or gross
+        // we have to manipulate the basket because its stupid and doesnt know if its netto or gross
         if(!count($vatService->getCurrentTotalVats())) {
             $basket->itemSum = $basket->itemSumNet;
             $basket->shippingAmount = $basket->shippingAmountNet;
             $basket->basketAmount = $basket->basketAmountNet;
         }
-        
+        $test = $this->sessionStorage->getPlugin()->getValue('nnBillingAddressId');
+        $this->getLogger(__METHOD__)->error('nnBillingAddressId', $test);
         $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $this->sessionStorage->getPlugin()->getValue('nnBillingAddressId'); 
         $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $this->sessionStorage->getPlugin()->getValue('nnShippingAddressId');
         $address = $this->paymentHelper->getCustomerBillingOrShippingAddress((int) $billingAddressId);
@@ -297,9 +298,9 @@ class PaymentService
         if(!empty($shippingAddressId)){
             $shippingAddress = $this->paymentHelper->getCustomerBillingOrShippingAddress((int) $shippingAddressId);
         }
-        
+
         $customerName = $this->getCustomerName($address);
-    
+
         $account = pluginApp(AccountService::class);
         $customerId = $account->getAccountContactId();
         $paymentKeyLower = strtolower((string) $paymentKey);
@@ -466,8 +467,8 @@ class PaymentService
      * @return string
      */
     public function getCreditCardAuthenticationCallData(Basket $basket, $paymentKey, $orderAmount = 0, $billingInvoiceAddrId = 0, $shippingInvoiceAddrId = 0) {
-        $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $billingInvoiceAddrId;
-        $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $shippingInvoiceAddrId;
+        $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $this->sessionStorage->getPlugin()->getValue('nnBillingAddressId');
+        $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $this->sessionStorage->getPlugin()->getValue('nnShippingAddressId');
         $billingAddress = $this->paymentHelper->getCustomerBillingOrShippingAddress((int) $billingAddressId);
         $shippingAddress = $billingAddress;
         if(!empty($shippingAddressId)){
@@ -487,7 +488,7 @@ class PaymentService
         
         $ccFormRequestParameters = [
             'client_key'    => trim($this->config->get('Novalnet.novalnet_client_key')),
-        'enforce_3d'    => (int)($this->config->get('Novalnet.' . strtolower((string) $paymentKey) . '_enforce') == 'true'),
+			'enforce_3d'    => (int)($this->config->get('Novalnet.' . strtolower((string) $paymentKey) . '_enforce') == 'true'),
             'test_mode'     => (int)($this->config->get('Novalnet.' . strtolower((string) $paymentKey) . '_test_mode') == 'true'),
             'first_name'    => !empty($billingAddress->firstName) ? $billingAddress->firstName : $customerName['firstName'],
             'last_name'     => !empty($billingAddress->lastName) ? $billingAddress->lastName : $customerName['lastName'],
@@ -750,11 +751,11 @@ class PaymentService
                 $minimumAmount = ((preg_match('/^[0-9]*$/', $minimumAmount) && $minimumAmount >= '999')  ? $minimumAmount : '999');
                 $amount        = !empty($orderAmount) ? $orderAmount : (sprintf('%0.2f', $basket->basketAmount) * 100);
 
-                $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $billingInvoiceAddrId;
+                $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $this->sessionStorage->getPlugin()->getValue('nnBillingAddressId');
                 $billingAddress = $this->paymentHelper->getCustomerBillingOrShippingAddress((int) $billingAddressId);
                 $customerBillingIsoCode = strtoupper($this->countryRepository->findIsoCode($billingAddress->countryId, 'iso_code_2'));
 
-                $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $shippingInvoiceAddrId;
+                $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $this->sessionStorage->getPlugin()->getValue('nnShippingAddressId');
                 
                 // Get the company value from the billing address
                 $billingAddressCompany = !empty($billingAddress->companyName) ? $billingAddress->companyName : $billingAddress->name1;
