@@ -22,10 +22,11 @@ use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
+use Plenty\Plugin\Log\Loggable;
 
 class NovalnetPaymentMethodReinitializePayment
 {
-  
+  use Loggable;
   public function call(Twig $twig, $arg):string
   {
     $order = $arg[0];
@@ -36,7 +37,9 @@ class NovalnetPaymentMethodReinitializePayment
     $paymentRepository = pluginApp(PaymentRepositoryContract::class);
     $sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
     $payments = $paymentRepository->getPaymentsByOrderId($order['id']);
-
+    
+    $this->getLogger(__METHOD__)->error('args0', $order);
+    
     $sessionStorage->getPlugin()->setValue('nnBillingAddressId', $order['billingAddress']['id']);
     $sessionStorage->getPlugin()->setValue('nnShippingAddressId', $order['deliveryAddress']['id']);
     // Get payment method Id and status
