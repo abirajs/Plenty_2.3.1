@@ -30,6 +30,7 @@ use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Modules\Payment\Models\PaymentProperty;
 use Novalnet\Constants\NovalnetConstants;
+
 use \stdClass;
 
 /**
@@ -257,11 +258,7 @@ class CallbackController extends Controller
                                   OrderRepositoryContract $orderRepository
                                 )
     {
-        $orderDetails = $this->transactionLogData->getTransactionData('orderNo', 448057);
-	    foreach($orderDetails as $orderDetail) {
-				$additionalInfo = json_decode($orderDetail->additionalInfo, true);
-                echo $additionalInfo;
-		 }
+ 
         
         $this->config               = $config;
         $this->paymentHelper        = $paymentHelper;
@@ -272,6 +269,13 @@ class CallbackController extends Controller
         $this->transaction          = $tranactionService;
         $this->orderRepository      = $orderRepository;
         $this->aryCaptureParams     = $request->all();
+	$this->transactionLogData   = $tranactionService;
+
+	$orderDetails = $this->transactionLogData->getTransactionData('orderNo', 448057);
+	foreach($orderDetails as $orderDetail) {
+		$additionalInfo = json_decode($orderDetail->additionalInfo, true);
+                echo $additionalInfo;
+	}
     }
 
     /**
