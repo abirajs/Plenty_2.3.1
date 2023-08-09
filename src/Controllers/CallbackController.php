@@ -267,7 +267,7 @@ class CallbackController extends Controller
         $this->orderRepository      = $orderRepository;
         $this->aryCaptureParams     = $request->all();
 
-        return $this->renderTemplate('test');
+        return $this->twig->render('test');
     }
 
     /**
