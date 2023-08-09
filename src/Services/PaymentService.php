@@ -1135,7 +1135,7 @@ class PaymentService
                     $additionalInfo = json_decode($orderDetail->additionalInfo, true);
 		    $this->getLogger(__METHOD__)->error('3',  $additionalInfo);
                     if(isset($additionalInfo['is_novalnet_callback_executed'])) { 
-                        $sendPaymentCall = 'false';
+                        $sendPaymentCall = false;
 			$this->getLogger(__METHOD__)->error('4',  $sendPaymentCall);    
                     }
              }
