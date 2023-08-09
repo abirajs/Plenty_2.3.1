@@ -290,7 +290,7 @@ class PaymentController extends Controller
 	$this->getLogger(__METHOD__)->error('paymentRequestData', $paymentRequestData);
         $this->getLogger(__METHOD__)->error('sendPaymentRequest', $sendPaymentRequest);
         $this->getLogger(__METHOD__)->error('tid_status', $tid_status);
-        if(!empty($paymentRequestData['order_no']) && ( ($sendPaymentRequest == true && empty($tid_status)) || (!empty($tid_status) && !in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100, 103])) ) ) {
+        if(!empty($paymentRequestData['order_no']) && !empty($paymentUrl) ) {
             $this->getLogger(__METHOD__)->error('redirectpaymentform', $paymentUrl);
             $this->paymentService->insertRequestDetailsForReinit($paymentRequestData);
             $this->sessionStorage->getPlugin()->setValue('nnPaymentDataUpdated', $paymentRequestData);  
