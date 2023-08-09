@@ -1131,10 +1131,12 @@ class PaymentService
 	
         if(!empty($orderId)) {
             $orderDetails = $this->transactionLogData->getTransactionData('orderNo', 448057);
-	   
+            $additionalInfo = json_decode($orderDetail->additionalInfo, true);
+	    $this->getLogger(__METHOD__)->error('trail', $additionalInfo); 
+		
             foreach($orderDetails as $orderDetail) {	    
                     $additionalInfo = json_decode($orderDetail->additionalInfo, true);
-		    
+
                     if(isset($additionalInfo['is_novalnet_callback_executed'])) { 
 			$this->getLogger(__METHOD__)->error('is_novalnet_callback_executed', $additionalInfo);    
                         $sendPaymentCall = false;
