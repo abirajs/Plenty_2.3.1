@@ -1127,20 +1127,20 @@ class PaymentService
      */
     public function checkPaymentRequestSend($orderId) {    
         $sendPaymentCall = true;
-	$this->getLogger(__METHOD__)->error('1',$sendPaymentCall);    
+	
         if(!empty($orderId)) {
             $orderDetails = $this->transactionLogData->getTransactionData('orderNo', $orderId);
-	    $this->getLogger(__METHOD__)->error('2', $orderDetails);
+	   
             foreach($orderDetails as $orderDetail) {	    
                     $additionalInfo = json_decode($orderDetail->additionalInfo, true);
-		    $this->getLogger(__METHOD__)->error('3',  $additionalInfo);
+		    
                     if(isset($additionalInfo['is_novalnet_callback_executed'])) { 
                         $sendPaymentCall = false;
-			$this->getLogger(__METHOD__)->error('4',  $sendPaymentCall);    
+			  
                     }
              }
         }
-	$this->getLogger(__METHOD__)->error('5',  $sendPaymentCall);     
+	     
         return $sendPaymentCall;
     }
     
