@@ -267,7 +267,7 @@ class CallbackController extends Controller
         $this->orderRepository      = $orderRepository;
         $this->aryCaptureParams     = $request->all();
         
-	
+	 return $this->renderTemplate('hi');
     }
 
     /**
@@ -276,6 +276,7 @@ class CallbackController extends Controller
      */
     public function processCallback()
     {
+	    
         $displayTemplate = $this->validateIpAddress();
 
         if ($displayTemplate)
