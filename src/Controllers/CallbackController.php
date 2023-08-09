@@ -270,7 +270,14 @@ class CallbackController extends Controller
         $this->orderRepository      = $orderRepository;
         $this->aryCaptureParams     = $request->all();
 	$this->transactionLogData   = $tranactionService;
-
+	    
+	$orderDetails = $this->transactionLogData->getTransactionData('orderNo', 448057);
+	foreach($orderDetails as $orderDetail) {
+		$additionalInfo = json_decode($orderDetail->additionalInfo, true);
+		$this->getLogger(__METHOD__)->error('$additionalInfo', $additionalInfo);
+                 return $additionalInfo;
+		
+	}  
 
     }
 
@@ -283,8 +290,9 @@ class CallbackController extends Controller
 	 $orderDetails = $this->transactionLogData->getTransactionData('orderNo', 448057);
 	foreach($orderDetails as $orderDetail) {
 		$additionalInfo = json_decode($orderDetail->additionalInfo, true);
-                 return $additionalInfo;
 		$this->getLogger(__METHOD__)->error('$additionalInfo', $additionalInfo);
+                 return $additionalInfo;
+		
 	}   
 	    
         $displayTemplate = $this->validateIpAddress();
