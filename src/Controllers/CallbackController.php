@@ -30,7 +30,6 @@ use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Modules\Payment\Models\PaymentProperty;
 use Novalnet\Constants\NovalnetConstants;
-
 use \stdClass;
 
 /**
@@ -258,8 +257,6 @@ class CallbackController extends Controller
                                   OrderRepositoryContract $orderRepository
                                 )
     {
- 
-        
         $this->config               = $config;
         $this->paymentHelper        = $paymentHelper;
         $this->paymentRepository    = $paymentRepository;
@@ -269,16 +266,8 @@ class CallbackController extends Controller
         $this->transaction          = $tranactionService;
         $this->orderRepository      = $orderRepository;
         $this->aryCaptureParams     = $request->all();
-	$this->transactionLogData   = $tranactionService;
-	    
-	$orderDetails = $this->transactionLogData->getTransactionData('orderNo', 448057);
+        
 	
-		$additionalInfo = json_decode($orderDetails->additionalInfo, true);
-		$this->getLogger(__METHOD__)->error('$additionalInfo', $additionalInfo);
-                 return $additionalInfo;
-		
-	 
-
     }
 
     /**
@@ -287,8 +276,6 @@ class CallbackController extends Controller
      */
     public function processCallback()
     {
- 
-	    
         $displayTemplate = $this->validateIpAddress();
 
         if ($displayTemplate)
@@ -554,13 +541,12 @@ class CallbackController extends Controller
      */
     public function validateIpAddress()
     {
-	 $orderDetails = $this->transactionLogData->getTransactionData('orderNo', 448057);
-	foreach($orderDetails as $orderDetail) {
-		$additionalInfo = json_decode($orderDetail->additionalInfo, true);
-		$this->getLogger(__METHOD__)->error('$additionalInfo', $additionalInfo);
-                 return $additionalInfo;
-		
-	}  
+        $client_ip = $this->paymentHelper->getRemoteAddress();
+        if(!in_array($client_ip, $this->ipAllowed) && $this->config->get('Novalnet.novalnet_callback_test_mode') != 'true')
+        {
+            return 'Novalnet callback received. Unauthorised access from the IP '. $client_ip;
+        }
+        return false;
     }
 
     /**
