@@ -1130,10 +1130,13 @@ class PaymentService
         $sendPaymentCall = true;
 	
         if(!empty($orderId)) {
+		   $orderDetails = $this->transactionLogData->getTransactionData('orderNo', 328);
+                     
             foreach($orderDetails as $orderDetail) {	 
-		    $orderDetails = $this->transactionLogData->getTransactionData('orderNo', 328);
-                    $additionalInfo = json_decode($orderDetail->additionalInfo, true);
-		     $this->getLogger(__METHOD__)->error('328', $additionalInfo);
+		 $additionalInfo = json_decode($orderDetail->additionalInfo, true);
+		     $orderNo = json_decode($orderDetail->orderNo, true);
+		    $this->getLogger(__METHOD__)->error('328', $additionalInfo);
+		     $this->getLogger(__METHOD__)->error('328__', $orderNo);
                     if(isset($additionalInfo['is_novalnet_callback_executed'])) { 
 			$this->getLogger(__METHOD__)->error('is_novalnet_callback_executed', $additionalInfo);    
                         $sendPaymentCall = false;
