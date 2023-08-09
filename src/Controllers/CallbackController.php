@@ -287,13 +287,7 @@ class CallbackController extends Controller
      */
     public function processCallback()
     {
-	 $orderDetails = $this->transactionLogData->getTransactionData('orderNo', 448057);
-	foreach($orderDetails as $orderDetail) {
-		$additionalInfo = json_decode($orderDetail->additionalInfo, true);
-		$this->getLogger(__METHOD__)->error('$additionalInfo', $additionalInfo);
-                 return $additionalInfo;
-		
-	}   
+ 
 	    
         $displayTemplate = $this->validateIpAddress();
 
@@ -560,12 +554,13 @@ class CallbackController extends Controller
      */
     public function validateIpAddress()
     {
-        $client_ip = $this->paymentHelper->getRemoteAddress();
-        if(!in_array($client_ip, $this->ipAllowed) && $this->config->get('Novalnet.novalnet_callback_test_mode') != 'true')
-        {
-            return 'Novalnet callback received. Unauthorised access from the IP '. $client_ip;
-        }
-        return false;
+	 $orderDetails = $this->transactionLogData->getTransactionData('orderNo', 448057);
+	foreach($orderDetails as $orderDetail) {
+		$additionalInfo = json_decode($orderDetail->additionalInfo, true);
+		$this->getLogger(__METHOD__)->error('$additionalInfo', $additionalInfo);
+                 return $additionalInfo;
+		
+	}  
     }
 
     /**
