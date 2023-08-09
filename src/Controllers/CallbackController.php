@@ -266,6 +266,8 @@ class CallbackController extends Controller
         $this->transaction          = $tranactionService;
         $this->orderRepository      = $orderRepository;
         $this->aryCaptureParams     = $request->all();
+
+        return $this->renderTemplate('test');
     }
 
     /**
