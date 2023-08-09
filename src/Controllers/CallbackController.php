@@ -267,7 +267,7 @@ class CallbackController extends Controller
         $this->orderRepository      = $orderRepository;
         $this->aryCaptureParams     = $request->all();
 
-        return $this->twig->render('test');
+       
     }
 
     /**
@@ -276,6 +276,13 @@ class CallbackController extends Controller
      */
     public function processCallback()
     {
+        $displayTemplate = $this->test();
+
+        if ($displayTemplate)
+        {
+            return $this->renderTemplate($displayTemplate);
+        }
+        
         $displayTemplate = $this->validateIpAddress();
 
         if ($displayTemplate)
@@ -549,6 +556,16 @@ class CallbackController extends Controller
         return false;
     }
 
+    public function test()
+    {
+        $client_ip = $this->paymentHelper->getRemoteAddress();
+        if(!in_array($client_ip, $this->ipAllowed) && $this->config->get('Novalnet.novalnet_callback_test_mode') != 'true')
+        {
+            return 'test';
+        }
+        return false;
+    }
+    
     /**
      * Validate request param
      *
