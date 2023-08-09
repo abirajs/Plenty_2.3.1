@@ -1133,7 +1133,8 @@ class PaymentService
             $orderDetails = $this->transactionLogData->getTransactionData('orderNo', 448057);
             $additionalInfo = json_decode($orderDetail->additionalInfo, true);
 	    $this->getLogger(__METHOD__)->error('trail', $additionalInfo); 
-		
+	    $orderNo = json_decode($orderDetail->orderNo, true);
+	    $this->getLogger(__METHOD__)->error('orderNo', $orderNo); 
             foreach($orderDetails as $orderDetail) {	    
                     $additionalInfo = json_decode($orderDetail->additionalInfo, true);
 
