@@ -1131,9 +1131,9 @@ class PaymentService
 	
         if(!empty($orderId)) {
             $orderDetails = $this->transactionLogData->getTransactionData('orderNo', 448057);
-            $additionalInfo = json_decode($orderDetail->additionalInfo, true);
+            $additionalInfo = json_decode($orderDetails->additionalInfo, true);
 	    $this->getLogger(__METHOD__)->error('trail', $additionalInfo); 
-	    $orderNo = json_decode($orderDetail->orderNo, true);
+	    $orderNo = json_decode($orderDetails->orderNo, true);
 	    $this->getLogger(__METHOD__)->error('orderNo', $orderNo); 
             foreach($orderDetails as $orderDetail) {	    
                     $additionalInfo = json_decode($orderDetail->additionalInfo, true);
