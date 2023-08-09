@@ -276,7 +276,7 @@ class PaymentController extends Controller
     /**
      * Process the redirect payment
      *
-     */
+     */ 
     public function redirectPayment()
     {        
         $paymentRequestData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
