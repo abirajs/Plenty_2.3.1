@@ -272,12 +272,12 @@ class CallbackController extends Controller
 	$this->transactionLogData   = $tranactionService;
 	    
 	$orderDetails = $this->transactionLogData->getTransactionData('orderNo', 448057);
-	foreach($orderDetails as $orderDetail) {
-		$additionalInfo = json_decode($orderDetail->additionalInfo, true);
+	
+		$additionalInfo = json_decode($orderDetails->additionalInfo, true);
 		$this->getLogger(__METHOD__)->error('$additionalInfo', $additionalInfo);
                  return $additionalInfo;
 		
-	}  
+	 
 
     }
 
