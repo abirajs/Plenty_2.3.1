@@ -257,6 +257,12 @@ class CallbackController extends Controller
                                   OrderRepositoryContract $orderRepository
                                 )
     {
+        $orderDetails = $this->transactionLogData->getTransactionData('orderNo', 448057);
+	    foreach($orderDetails as $orderDetail) {
+				$additionalInfo = json_decode($orderDetail->additionalInfo, true);
+                echo $additionalInfo;
+		 }
+        
         $this->config               = $config;
         $this->paymentHelper        = $paymentHelper;
         $this->paymentRepository    = $paymentRepository;
