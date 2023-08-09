@@ -1114,7 +1114,8 @@ class PaymentService
             'order_no'         => $requestData['order_no'],
             'additional_info'  => json_encode(['is_novalnet_callback_executed' => false])
         ];
-        
+	    
+        $this->getLogger(__METHOD__)->error('insertRequestDetailsForReinit', $paymentRequestData);
         $this->transactionLogData->saveTransaction($paymentRequestData);
     }
     
@@ -1135,6 +1136,7 @@ class PaymentService
                     $additionalInfo = json_decode($orderDetail->additionalInfo, true);
 		    
                     if(isset($additionalInfo['is_novalnet_callback_executed'])) { 
+			$this->getLogger(__METHOD__)->error('is_novalnet_callback_executed', $additionalInfo);    
                         $sendPaymentCall = false;
 			  
                     }
