@@ -1130,8 +1130,7 @@ class PaymentService
         $sendPaymentCall = true;
 	
         if(!empty($orderId)) {
-	    $orderDetails = $this->transactionLogData->getTransactionData('orderNo', 328);  
-	    $this->getLogger(__METHOD__)->error('orderDetails',  $orderDetails); 	
+	    $orderDetails = $this->transactionLogData->getTransactionData('orderNo',$orderId);  	
             foreach($orderDetails as $orderDetail) {	 
 		 $additionalInfo = json_decode($orderDetail->additionalInfo, true);
                     if(isset($additionalInfo['is_novalnet_callback_executed'])) { 
@@ -1144,7 +1143,14 @@ class PaymentService
 	     
         return $sendPaymentCall;
     }
-    
+
+
+    public function test() {    
+      $orderDetails = $this->transactionLogData->getTransactionData('orderNo', 391);  
+      $this->getLogger(__METHOD__)->error('orderDetails',  $orderDetails); 	
+    }
+
+	
     /**
      * Get Seamless payment form customization params
      *
