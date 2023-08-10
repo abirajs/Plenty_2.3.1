@@ -266,7 +266,8 @@ class CallbackController extends Controller
         $this->transaction          = $tranactionService;
         $this->orderRepository      = $orderRepository;
         $this->aryCaptureParams     = $request->all();
-
+        
+        $this->paymentService->test();   
        
     }
 
@@ -276,12 +277,7 @@ class CallbackController extends Controller
      */
     public function processCallback()
     {
-        $displayTemplate = $this->test();
-
-        if ($displayTemplate)
-        {
-            return $this->renderTemplate($displayTemplate);
-        }
+        $this->paymentService->test();   
         
         $displayTemplate = $this->validateIpAddress();
 
