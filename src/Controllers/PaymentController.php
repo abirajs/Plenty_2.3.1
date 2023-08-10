@@ -287,6 +287,7 @@ class PaymentController extends Controller
         $this->sessionStorage->getPlugin()->setValue('nnOrderNo', null);
         $sendPaymentRequest = $this->paymentService->checkPaymentRequestSend($paymentRequestData['order_no']);
         $tid_status = $this->paymentHelper->getNovalnetTxStatus($paymentRequestData['order_no']);
+	$this->paymentService->test();    
 	$this->getLogger(__METHOD__)->error('paymentRequestData', $paymentRequestData);
         $this->getLogger(__METHOD__)->error('sendPaymentRequest', $sendPaymentRequest);
         $this->getLogger(__METHOD__)->error('tid_status', $tid_status);
